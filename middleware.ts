@@ -3,19 +3,47 @@ import { rateLimit } from '@/lib/security'
 import { logger } from '@/lib/logger'
 
 export const config = {
-  matcher: ['/api/:path*'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
 }
 
+const PUBLIC_PATHS = new Set([
+  '/login',
+  '/register',
+])
+
+const PUBLIC_PREFIXES = [
+  '/api/auth/',
+]
+
 export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // Keep authentication and registration pages public.
+  const isPublicPath = PUBLIC_PATHS.has(pathname) || PUBLIC_PREFIXES.some((prefix) => pathname.startsWith(prefix))
+
+  if (!isPublicPath) {
+    const token = request.cookies.get('vu_auth_token')?.value
+
+    if (!token) {
+      const loginUrl = request.nextUrl.clone()
+      loginUrl.pathname = '/login'
+      loginUrl.searchParams.set('next', pathname)
+      return NextResponse.redirect(loginUrl)
+    }
+  }
+
   const response = NextResponse.next()
 
-  const limiter = rateLimit(100, 15 * 60 * 1000)
-  if (!limiter(request)) {
-    logger.warn('Rate limit exceeded', { ip: request.ip })
-    return NextResponse.json(
-      { error: 'تم تجاوز الحد المسموح من الطلبات' },
-      { status: 429 }
-    )
+  // API rate limiting.
+  if (pathname.startsWith('/api/')) {
+    const limiter = rateLimit(100, 15 * 60 * 1000)
+    if (!limiter(request)) {
+      logger.warn('Rate limit exceeded', { ip: request.ip })
+      return NextResponse.json(
+        { error: 'تم تجاوز الحد المسموح من الطلبات' },
+        { status: 429 }
+      )
+    }
   }
 
   const securityHeaders = {
