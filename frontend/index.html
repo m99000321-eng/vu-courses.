@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VU. COURSES - Frontend Navigation</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #6C2BD9 0%, #1e293b 100%);
+      min-height: 100vh;
+      color: #1e293b;
+      padding: 2rem;
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header {
+      background: linear-gradient(135deg, #6C2BD9 0%, #4c1d95 100%);
+      color: white;
+      padding: 2rem;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+    .header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .header p { opacity: 0.9; font-size: 1.1rem; }
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      margin: 0.25rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .section {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+    .section h2 {
+      color: #6C2BD9;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 3px solid #6C2BD9;
+    }
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+    .link-card {
+      display: block;
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1rem;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .link-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #6C2BD9, #F97316);
+    }
+    .link-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(108, 43, 217, 0.2);
+      border-color: #6C2BD9;
+    }
+    .link-card h3 {
+      color: #6C2BD9;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .link-card code {
+      display: block;
+      background: #1e293b;
+      color: #10b981;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+    .footer {
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      border-radius: 20px;
+      margin-top: 2rem;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #6C2BD9;
+    }
+    .stat-label {
+      color: #64748b;
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>VU. COURSES</h1>
+      <p>منصة تعليمية متكاملة - Frontend Navigation</p>
+      <div style="margin-top: 1rem;">
+        <span class="badge">35 صفحة</span>
+        <span class="badge">8 مكونات</span>
+        <span class="badge">21 API</span>
+        <span class="badge">RTL عربي</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-number">35</div>
+        <div class="stat-label">صفحة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">8</div>
+        <div class="stat-label">مكون</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">21</div>
+        <div class="stat-label">API Route</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">3</div>
+        <div class="stat-label">أدوار</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🔐 صفحات عامة</h2>
+      <div class="links-grid">
+        <a href="http://localhost:3000/" class="link-card" target="_blank">
+          <h3>🏠 الرئيسية</h3>
+          <code>/</code>
+        </a>
+        <a href="http://localhost:3000/login" class="link-card" target="_blank">
+          <h3>🔐 تسجيل الدخول</h3>
+          <code>/login</code>
+        </a>
+        <a href="http://localhost:3000/register" class="link-card" target="_blank">
+          <h3>📝 التسجيل</h3>
+          <code>/register</code>
+        </a>
+        <a href="http://localhost:3000/courses" class="link-card" target="_blank">
+          <h3>📚 الكورسات</h3>
+          <code>/courses</code>
+        </a>
+        <a href="http://localhost:3000/chat" class="link-card" target="_blank">
+          <h3>💬 المحادثات</h3>
+          <code>/chat</code>
+        </a>
+        <a href="http://localhost:3000/notifications" class="link-card" target="_blank">
+          <h3>🔔 التنبيهات</h3>
+          <code>/notifications</code>
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🎓 بوابة الطالب (7 صفحات)</h2>
+      <div class="links-grid">
+        <a href="http://localhost:3000/student/dashboard" class="link-card" target="_blank">
+          <h3>📊 لوحة التحكم</h3>
+          <code>/student/dashboard</code>
+        </a>
+        <a href="http://localhost:3000/student/my-courses" class="link-card" target="_blank">
+          <h3>📖 دوراتي</h3>
+          <code>/student/my-courses</code>
+        </a>
+        <a href="http://localhost:3000/student/progress" class="link-card" target="_blank">
+          <h3>📈 التقدم</h3>
+          <code>/student/progress</code>
+        </a>
+        <a href="http://localhost:3000/student/certificates" class="link-card" target="_blank">
+          <h3>🎓 الشهادات</h3>
+          <code>/student/certificates</code>
+        </a>
+        <a href="http://localhost:3000/student/favorites" class="link-card" target="_blank">
+          <h3>⭐ المفضلة</h3>
+          <code>/student/favorites</code>
+        </a>
+        <a href="http://localhost:3000/student/profile" class="link-card" target="_blank">
+          <h3>👤 الملف الشخصي</h3>
+          <code>/student/profile</code>
+        </a>
+        <a href="http://localhost:3000/student/settings" class="link-card" target="_blank">
+          <h3>⚙️ الإعدادات</h3>
+          <code>/student/settings</code>
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>👨‍🏫 بوابة المحاضر (8 صفحات)</h2>
+      <div class="links-grid">
+        <a href="http://localhost:3000/instructor/dashboard" class="link-card" target="_blank">
+          <h3>📊 لوحة التحكم</h3>
+          <code>/instructor/dashboard</code>
+        </a>
+        <a href="http://localhost:3000/instructor/my-courses" class="link-card" target="_blank">
+          <h3>📚 كورساتي</h3>
+          <code>/instructor/my-courses</code>
+        </a>
+        <a href="http://localhost:3000/instructor/create-course" class="link-card" target="_blank">
+          <h3>➕ إنشاء كورس</h3>
+          <code>/instructor/create-course</code>
+        </a>
+        <a href="http://localhost:3000/instructor/students" class="link-card" target="_blank">
+          <h3>👥 الطلاب</h3>
+          <code>/instructor/students</code>
+        </a>
+        <a href="http://localhost:3000/instructor/assignments" class="link-card" target="_blank">
+          <h3>📝 المهام والدروس</h3>
+          <code>/instructor/assignments</code>
+        </a>
+        <a href="http://localhost:3000/instructor/quizzes" class="link-card" target="_blank">
+          <h3>❓ الاختبارات</h3>
+          <code>/instructor/quizzes</code>
+        </a>
+        <a href="http://localhost:3000/instructor/analytics" class="link-card" target="_blank">
+          <h3>📈 التحليلات</h3>
+          <code>/instructor/analytics</code>
+        </a>
+        <a href="http://localhost:3000/instructor/profile" class="link-card" target="_blank">
+          <h3>👤 الملف الشخصي</h3>
+          <code>/instructor/profile</code>
+        </a>
+        <a href="http://localhost:3000/instructor/settings" class="link-card" target="_blank">
+          <h3>⚙️ الإعدادات</h3>
+          <code>/instructor/settings</code>
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🛠️ بوابة الأدمن (13 صفحة)</h2>
+      <div class="links-grid">
+        <a href="http://localhost:3000/admin/dashboard" class="link-card" target="_blank">
+          <h3>📊 لوحة التحكم</h3>
+          <code>/admin/dashboard</code>
+        </a>
+        <a href="http://localhost:3000/admin/users" class="link-card" target="_blank">
+          <h3>👥 المستخدمين</h3>
+          <code>/admin/users</code>
+        </a>
+        <a href="http://localhost:3000/admin/students" class="link-card" target="_blank">
+          <h3>🎓 الطلاب</h3>
+          <code>/admin/students</code>
+        </a>
+        <a href="http://localhost:3000/admin/instructors" class="link-card" target="_blank">
+          <h3>👨‍🏫 المحاضرين</h3>
+          <code>/admin/instructors</code>
+        </a>
+        <a href="http://localhost:3000/admin/categories" class="link-card" target="_blank">
+          <h3>📁 الأقسام</h3>
+          <code>/admin/categories</code>
+        </a>
+        <a href="http://localhost:3000/admin/levels" class="link-card" target="_blank">
+          <h3>📊 المستويات</h3>
+          <code>/admin/levels</code>
+        </a>
+        <a href="http://localhost:3000/admin/lessons" class="link-card" target="_blank">
+          <h3>📝 الدروس</h3>
+          <code>/admin/lessons</code>
+        </a>
+        <a href="http://localhost:3000/admin/quizzes" class="link-card" target="_blank">
+          <h3>❓ الاختبارات</h3>
+          <code>/admin/quizzes</code>
+        </a>
+        <a href="http://localhost:3000/admin/certificates" class="link-card" target="_blank">
+          <h3>🎓 الشهادات</h3>
+          <code>/admin/certificates</code>
+        </a>
+        <a href="http://localhost:3000/admin/payments" class="link-card" target="_blank">
+          <h3>💳 المدفوعات</h3>
+          <code>/admin/payments</code>
+        </a>
+        <a href="http://localhost:3000/admin/subscriptions" class="link-card" target="_blank">
+          <h3>📋 الاشتراكات</h3>
+          <code>/admin/subscriptions</code>
+        </a>
+        <a href="http://localhost:3000/admin/reports" class="link-card" target="_blank">
+          <h3>📈 التقارير</h3>
+          <code>/admin/reports</code>
+        </a>
+        <a href="http://localhost:3000/admin/settings" class="link-card" target="_blank">
+          <h3>⚙️ الإعدادات</h3>
+          <code>/admin/settings</code>
+        </a>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🧩 المكونات (Components)</h2>
+      <div class="links-grid">
+        <div class="link-card">
+          <h3>🧭 Navbar</h3>
+          <code>components/navbar.tsx</code>
+        </div>
+        <div class="link-card">
+          <h3>📋 Sidebar</h3>
+          <code>components/sidebar.tsx</code>
+        </div>
+        <div class="link-card">
+          <h3>🎬 Video Player</h3>
+          <code>components/video-player-modal.tsx</code>
+        </div>
+        <div class="link-card">
+          <h3>📄 PDF Viewer</h3>
+          <code>components/pdf-viewer-modal.tsx</code>
+        </div>
+        <div class="link-card">
+          <h3>❓ Quiz Modal</h3>
+          <code>components/quiz-modal.tsx</code>
+        </div>
+        <div class="link-card">
+          <h3>🏆 Certificate Modal</h3>
+          <code>components/certificate-modal.tsx</code>
+        </div>
+        <div class="link-card">
+          <h3>🎨 Logo</h3>
+          <code>components/logo.tsx</code>
+        </div>
+        <div class="link-card">
+          <h3>🌙 Theme Provider</h3>
+          <code>components/theme-provider.tsx</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <h3>VU. COURSES - منصة تعليمية متكاملة</h3>
+      <p style="margin-top: 0.5rem; opacity: 0.8;">
+        جميع الصفحات تعمل على: <strong style="color: #10b981;">http://localhost:3000</strong>
+      </p>
+      <p style="margin-top: 0.5rem; opacity: 0.6; font-size: 0.9rem;">
+        © 2026 جميع الحقوق محفوظة
+      </p>
+    </div>
+  </div>
+</body>
+</html>
