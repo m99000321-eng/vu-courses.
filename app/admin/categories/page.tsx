@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { Navbar } from '@/components/navbar'
 import { Sidebar } from '@/components/sidebar'
+import { useLanguage } from '@/components/language-provider'
 import {
   PlusCircle,
   Edit,
