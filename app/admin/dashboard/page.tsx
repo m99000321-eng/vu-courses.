@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
 import { Sidebar } from '@/components/sidebar'
 import {
@@ -11,6 +12,7 @@ import {
   Award,
   PlusCircle,
   CreditCard,
+  ShieldCheck,
 } from 'lucide-react'
 import { useLanguage } from '@/components/language-provider'
 
@@ -21,6 +23,7 @@ export default function AdminDashboard() {
   const [showAddModal, setShowAddModal] = useState(false)
   const [newUser, setNewUser] = useState({ name: '', email: '', password: '', role: 'STUDENT' })
   const [isCreating, setIsCreating] = useState(false)
+  const reportData = { totalCertificates: 0 }
 
   useEffect(() => {
     fetch('/api/auth/me')
@@ -250,7 +253,7 @@ export default function AdminDashboard() {
               </div>
               <div>
                  <p className="text-[11px] text-slate-500 font-semibold">{t('issuedCertificates')}</p>
-                 <p className="text-xl font-black text-slate-800 dark:text-slate-100">{reportData?.totalCertificates || 0} {t('certificates')}</p>
+                 <p className="text-xl font-black text-slate-800 dark:text-slate-100">{reportData.totalCertificates} {t('certificates')}</p>
               </div>
             </div>
           </div>
