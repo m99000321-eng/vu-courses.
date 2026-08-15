@@ -3,10 +3,21 @@ import { rateLimit } from '@/lib/security'
 import { logger } from '@/lib/logger'
 
 export const config = {
-  matcher: ['/api/:path*'],
+  matcher: ['/api/:path*', '/courses'],
 }
 
 export function middleware(request: NextRequest) {
+  if (
+    request.nextUrl.pathname === '/courses' &&
+    request.cookies.get('vu_post_login_redirect')?.value === 'dashboard'
+  ) {
+    const redirectUrl = request.nextUrl.clone()
+    redirectUrl.pathname = '/student/dashboard'
+    const redirectResponse = NextResponse.redirect(redirectUrl)
+    redirectResponse.cookies.delete('vu_post_login_redirect')
+    return redirectResponse
+  }
+
   const response = NextResponse.next()
 
   const limiter = rateLimit(100, 15 * 60 * 1000)
