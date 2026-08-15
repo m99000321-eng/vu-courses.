@@ -51,6 +51,16 @@ export const POST = withErrorHandling(
       secure: process.env.NODE_ENV === 'production',
     })
 
+    if (user.role === 'STUDENT') {
+      response.cookies.set('vu_post_login_redirect', 'dashboard', {
+        httpOnly: true,
+        path: '/',
+        maxAge: 60,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+      })
+    }
+
     logger.info('User logged in', { userId: user.id, email: user.email })
     return response
   })
