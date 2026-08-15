@@ -1,10 +1,10 @@
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
-import { Logo } from '@/components/logo'
+
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Lock, Mail, ShieldAlert, Eye, EyeOff, GraduationCap } from 'lucide-react'
+import { Lock, Mail, ShieldAlert, Eye, EyeOff, GraduationCap, CheckCircle } from 'lucide-react'
 import { gsap } from 'gsap'
 import { useLanguage } from '@/components/language-provider'
 
@@ -16,6 +16,7 @@ export default function LoginPage() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [success, setSuccess] = useState('')
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
 
   const containerRef = useRef<HTMLDivElement>(null)
@@ -169,6 +170,7 @@ export default function LoginPage() {
     e.preventDefault()
     setIsLoading(true)
     setError('')
+    setSuccess('')
 
     try {
       const res = await fetch('/api/auth/login', {
@@ -183,6 +185,8 @@ export default function LoginPage() {
         setError(data.error || t('loginFailed'))
         return
       }
+
+      setSuccess(t('loginSuccess'))
 
       if (data.user?.role === 'ADMIN') router.push('/admin/dashboard')
       else if (data.user?.role === 'INSTRUCTOR') router.push('/instructor/dashboard')
@@ -207,44 +211,24 @@ export default function LoginPage() {
       className="min-h-screen bg-slate-950 flex flex-col justify-center items-center p-4 font-sans relative overflow-hidden"
       dir="rtl"
     >
-      {/* Canvas Background */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none"
-      />
-
-      {/* Gradient Orbs */}
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-purple/20 rounded-full blur-[120px] animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-orange/20 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
-
-      {/* Floating Shapes */}
       <div className="floating-shape absolute top-20 right-20 w-32 h-32 border border-brand-purple/20 rounded-full" />
       <div className="floating-shape absolute bottom-32 left-16 w-24 h-24 border border-brand-orange/20 rounded-full" />
       <div className="floating-shape absolute top-1/3 left-1/3 w-16 h-16 border border-brand-purple/30 rounded-lg rotate-45" />
-
-      {/* Mouse Glow */}
       <div
         className="absolute w-64 h-64 bg-brand-purple/10 rounded-full blur-[80px] pointer-events-none transition-all duration-300"
-        style={{
-          left: mousePos.x - 128,
-          top: mousePos.y - 128,
-        }}
+        style={{ left: mousePos.x - 128, top: mousePos.y - 128 }}
       />
 
-      {/* Main Card */}
       <div ref={cardRef} className="login-card w-full max-w-md relative z-10" style={{ perspective: '1000px' }}>
         <div className="relative bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl shadow-2xl shadow-black/50 overflow-hidden">
-
-          {/* Top Gradient Line */}
           <div className="h-1 w-full bg-gradient-to-r from-brand-purple via-brand-orange to-brand-purple animate-pulse" />
-
-          {/* Inner Glow */}
           <div className="absolute inset-0 bg-gradient-to-br from-brand-purple/5 via-transparent to-brand-orange/5 pointer-events-none" />
 
           <div className="p-8 md:p-10 space-y-6">
-            {/* Brand Header */}
             <div className="flex flex-col items-center text-center space-y-4">
-              {/* Animated Logo */}
               <div className="relative">
                 <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-brand-purple to-brand-orange flex items-center justify-center shadow-2xl shadow-brand-purple/40 relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent" />
@@ -254,17 +238,19 @@ export default function LoginPage() {
               </div>
 
               <div>
-                <h1 className="text-3xl font-black text-white tracking-tight mb-2">
-                  {t('loginTitle')}
-                </h1>
+                <h1 className="text-3xl font-black text-white tracking-tight mb-2">{t('loginTitle')}</h1>
                 <div className="h-0.5 w-16 mx-auto bg-gradient-to-r from-brand-purple to-brand-orange rounded-full mb-3" />
-                <p className="text-sm text-slate-400">
-                  {t('loginSubtitle')}
-                </p>
+                <p className="text-sm text-slate-400">{t('loginSubtitle')}</p>
               </div>
             </div>
 
-            {/* Error Message */}
+            {success && (
+              <div className="form-item p-3.5 bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs font-medium rounded-xl flex items-center gap-2.5 backdrop-blur-sm">
+                <CheckCircle className="w-4 h-4 shrink-0 text-emerald-400" />
+                <span>{success}</span>
+              </div>
+            )}
+
             {error && (
               <div className="form-item p-3.5 bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs font-medium rounded-xl flex items-center gap-2.5 backdrop-blur-sm">
                 <ShieldAlert className="w-4 h-4 shrink-0 text-rose-400" />
@@ -273,7 +259,6 @@ export default function LoginPage() {
             )}
 
             <form onSubmit={handleLogin} className="space-y-4">
-              {/* Email */}
               <div className="form-item">
                 <label className="block text-xs font-bold text-slate-300 mb-1.5">{t('email')}</label>
                 <div className="relative group">
@@ -285,13 +270,10 @@ export default function LoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     className="input-field w-full p-3.5 pr-11 bg-slate-800/50 border border-slate-700/50 rounded-xl text-sm text-white placeholder:text-slate-500 outline-none focus:border-brand-purple focus:ring-2 focus:ring-brand-purple/30 transition-all duration-300 backdrop-blur-sm"
                   />
-                  <div className="absolute right-3.5 top-3.5 text-slate-500 group-focus-within:text-brand-purple transition-colors duration-300">
-                    <Mail className="w-4 h-4" />
-                  </div>
+                  <div className="absolute right-3.5 top-3.5 text-slate-500 group-focus-within:text-brand-purple transition-colors duration-300"><Mail className="w-4 h-4" /></div>
                 </div>
               </div>
 
-              {/* Password */}
               <div className="form-item">
                 <label className="block text-xs font-bold text-slate-300 mb-1.5">{t('password')}</label>
                 <div className="relative group">
@@ -303,20 +285,13 @@ export default function LoginPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     className="input-field w-full p-3.5 pr-11 bg-slate-800/50 border border-slate-700/50 rounded-xl text-sm text-white placeholder:text-slate-500 outline-none focus:border-brand-purple focus:ring-2 focus:ring-brand-purple/30 transition-all duration-300 backdrop-blur-sm"
                   />
-                  <div className="absolute right-3.5 top-3.5 text-slate-500 group-focus-within:text-brand-purple transition-colors duration-300">
-                    <Lock className="w-4 h-4" />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute left-3.5 top-3.5 text-slate-500 hover:text-slate-300 transition-colors duration-200"
-                  >
+                  <div className="absolute right-3.5 top-3.5 text-slate-500 group-focus-within:text-brand-purple transition-colors duration-300"><Lock className="w-4 h-4" /></div>
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute left-3.5 top-3.5 text-slate-500 hover:text-slate-300 transition-colors duration-200">
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
-              {/* Submit Button */}
               <div className="form-item pt-1">
                 <button
                   type="submit"
@@ -333,63 +308,31 @@ export default function LoginPage() {
                         </svg>
                         {t('loading')}
                       </>
-                    ) : (
-                      <span>{t('loginButton')}</span>
-                    )}
+                    ) : <span>{t('loginButton')}</span>}
                   </span>
                 </button>
               </div>
             </form>
 
-            {/* Divider */}
             <div className="relative py-4">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-700/50" />
-              </div>
-              <div className="relative flex justify-center">
-                <span className="px-3 bg-slate-900 text-slate-500 text-[11px] font-medium">{t('orDivider')}</span>
-              </div>
+              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-700/50" /></div>
+              <div className="relative flex justify-center"><span className="px-3 bg-slate-900 text-slate-500 text-[11px] font-medium">{t('orDivider')}</span></div>
             </div>
 
-            {/* Quick Login */}
             <div className="text-center text-sm text-slate-400">
               <p className="text-[11px] font-bold text-slate-500 mb-2">{t('quickLogin')}:</p>
               <div className="grid grid-cols-3 gap-2">
-                <button
-                  onClick={() => handleQuickLogin('student1@vucourses.com', 'pass123')}
-                  className="p-2.5 bg-slate-800/50 border border-slate-700/50 rounded-xl text-[11px] font-bold text-brand-purple hover:bg-slate-800 transition btn-hover"
-                >
-                  {t('studentLogin')}
-                </button>
-                <button
-                  onClick={() => handleQuickLogin('instructor@vucourses.com', 'inst123')}
-                  className="p-2.5 bg-slate-800/50 border border-slate-700/50 rounded-xl text-[11px] font-bold text-brand-orange hover:bg-slate-800 transition btn-hover"
-                >
-                  {t('instructorLogin')}
-                </button>
-                <button
-                  onClick={() => handleQuickLogin('admin@vucourses.com', 'admin123')}
-                  className="p-2.5 bg-slate-800/50 border border-slate-700/50 rounded-xl text-[11px] font-bold text-slate-300 hover:bg-slate-800 transition btn-hover"
-                >
-                  {t('adminLogin')}
-                </button>
+                <button onClick={() => handleQuickLogin('student1@vucourses.com', 'pass123')} className="p-2.5 bg-slate-800/50 border border-slate-700/50 rounded-xl text-[11px] font-bold text-brand-purple hover:bg-slate-800 transition btn-hover">{t('studentLogin')}</button>
+                <button onClick={() => handleQuickLogin('instructor@vucourses.com', 'inst123')} className="p-2.5 bg-slate-800/50 border border-slate-700/50 rounded-xl text-[11px] font-bold text-brand-orange hover:bg-slate-800 transition btn-hover">{t('instructorLogin')}</button>
+                <button onClick={() => handleQuickLogin('admin@vucourses.com', 'admin123')} className="p-2.5 bg-slate-800/50 border border-slate-700/50 rounded-xl text-[11px] font-bold text-emerald-400 hover:bg-slate-800 transition btn-hover">{t('adminLogin')}</button>
               </div>
             </div>
 
-            {/* Register Link */}
-            <div className="text-center text-sm text-slate-400">
-              {t('noAccount')}{' '}
-              <Link href="/register" className="text-brand-purple font-bold hover:text-brand-purple-hover transition-colors duration-200 relative inline-block">
-                {t('register')}
-              </Link>
+            <div className="text-center">
+              <p className="text-xs text-slate-500">{t('noAccount')} <Link href="/register" className="text-brand-orange hover:text-orange-400 font-bold transition">{t('createAccount')}</Link></p>
             </div>
           </div>
         </div>
-
-        {/* Footer */}
-        <p className="text-center text-slate-600 text-xs mt-5 font-medium">
-          {t('copyright')}
-        </p>
       </div>
     </div>
   )
