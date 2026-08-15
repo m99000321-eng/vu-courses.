@@ -11,6 +11,7 @@ import {
   Wallet,
   User as UserIcon,
   LogOut,
+  LogIn,
   ChevronDown,
   Languages,
   GraduationCap,
@@ -173,6 +174,16 @@ export function Navbar({ currentUser }: { currentUser?: User | null }) {
           >
             {theme === 'dark' ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-slate-700" />}
           </button>
+
+          {/* Login Button */}
+          <Link
+            href="/login"
+            className="flex items-center gap-1.5 px-3 py-2 bg-brand-purple hover:bg-brand-purple-hover text-white text-xs font-bold rounded-lg shadow transition btn-hover whitespace-nowrap"
+            title="تسجيل الدخول"
+          >
+            <LogIn className="w-4 h-4" />
+            <span className="hidden sm:inline">تسجيل الدخول</span>
+          </Link>
 
           {/* Notifications Bell */}
           {currentUser && (
