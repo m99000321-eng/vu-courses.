@@ -83,7 +83,7 @@ export default function StudentDashboard() {
           {/* Welcome Banner */}
           <div className="bg-gradient-to-r from-brand-purple to-slate-900 text-white p-4 sm:p-6 rounded-2xl shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fade-in-up">
               <div className="space-y-1">
-                <h1 className="text-xl sm:text-2xl font-black">{t('welcomeBack')}، {user?.name || t('student')} 👋</h1>
+                <h1 className="text-xl sm:text-2xl font-black">{t('welcomeBack')} 👋</h1>
                 <p className="text-xs text-purple-200">{t('welcomeSubtitle')}</p>
               </div>
             <Link
