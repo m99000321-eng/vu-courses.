@@ -37,6 +37,7 @@ export default function AdminStudents() {
   const [students, setStudents] = useState<StudentData[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
+  const [expandedStudent, setExpandedStudent] = useState<string | null>(null)
 
   useEffect(() => {
     fetchUser()
@@ -108,10 +109,10 @@ export default function AdminStudents() {
       <div className="flex-1 max-w-7xl w-full mx-auto flex">
         <Sidebar role="ADMIN" activeTab="students" />
 
-        <main className="flex-1 p-6 space-y-6 overflow-y-auto">
-          <div className="bg-gradient-to-r from-purple-950 via-slate-900 to-brand-purple text-white p-6 rounded-2xl shadow-lg flex items-center justify-between">
+        <main className="flex-1 p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto min-w-0">
+          <div className="bg-gradient-to-r from-purple-950 via-slate-900 to-brand-purple text-white p-4 sm:p-6 rounded-2xl shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-               <h1 className="text-2xl font-black">{t('manageStudents')}</h1>
+               <h1 className="text-xl sm:text-2xl font-black">{t('manageStudents')}</h1>
                <p className="text-xs text-purple-200 mt-1">{t('studentsDescription')}</p>
             </div>
             <span className="px-3.5 py-1.5 bg-brand-orange text-white text-xs font-black rounded-full shadow">
@@ -119,12 +120,12 @@ export default function AdminStudents() {
             </span>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm space-y-4">
             <div className="relative">
               <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
                 type="text"
-                 placeholder={t('searchByNameOrEmail')}
+                placeholder={t('searchByNameOrEmail')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full pr-10 pl-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-medium text-slate-800 dark:text-slate-200 outline-none focus:ring-2 focus:ring-brand-purple/50"
@@ -150,11 +151,14 @@ export default function AdminStudents() {
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
                     {filteredStudents.map((s) => (
-                      <>
-                        <tr key={s.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                      <React.Fragment key={s.id}>
+                        <tr
+                          className="hover:bg-slate-50 dark:hover:bg-slate-800/40 cursor-pointer"
+                          onClick={() => setExpandedStudent(expandedStudent === s.id ? null : s.id)}
+                        >
                           <td className="py-3 px-4">
                             <div className="flex items-center gap-2">
-                              <div className="w-8 h-8 rounded-full bg-brand-purple text-white font-bold flex items-center justify-center text-xs">
+                              <div className="w-8 h-8 rounded-full bg-brand-purple text-white font-bold flex items-center justify-center text-xs shrink-0">
                                 {s.avatar ? <img src={s.avatar} alt="" className="w-full h-full rounded-full object-cover" /> : s.name.charAt(0)}
                               </div>
                               <span className="font-bold text-slate-800 dark:text-slate-200">{s.name}</span>
@@ -168,7 +172,7 @@ export default function AdminStudents() {
                               {s.certificatesCount}
                             </span>
                           </td>
-                           <td className="py-3 px-4 font-bold text-brand-purple">{s.walletBalance.toFixed(0)} {t('currency')}</td>
+                          <td className="py-3 px-4 font-bold text-brand-purple">{s.walletBalance.toFixed(0)} {t('currency')}</td>
                           <td className="py-3 px-4 text-slate-500">
                             {new Date(s.createdAt).toLocaleDateString('ar-EG')}
                           </td>
@@ -182,10 +186,10 @@ export default function AdminStudents() {
                               ) : (
                                 <div className="space-y-2">
                                   {s.enrollments.map((e) => (
-                                    <div key={e.id} className="flex items-center gap-3 bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
-                                      <BookOpen className="w-4 h-4 text-brand-purple" />
+                                    <div key={e.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+                                      <BookOpen className="w-4 h-4 text-brand-purple shrink-0" />
                                       <span className="font-bold text-slate-800 dark:text-slate-200 flex-1">{e.course.title}</span>
-                                      <div className="flex items-center gap-2">
+                                      <div className="flex items-center gap-2 w-full sm:w-auto">
                                         <div className="w-24 h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                                           <div
                                             className="h-full bg-brand-purple rounded-full"
@@ -201,7 +205,7 @@ export default function AdminStudents() {
                             </td>
                           </tr>
                         )}
-                      </>
+                      </React.Fragment>
                     ))}
                   </tbody>
                 </table>
