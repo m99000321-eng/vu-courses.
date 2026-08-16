@@ -182,6 +182,12 @@ export default function LoginPage() {
                 </div>
               </div>
 
+              <div className="form-item flex items-center justify-between gap-3 pt-1">
+                <Link href="/forgot-password" className="text-xs font-bold text-brand-orange hover:text-orange-400 transition">
+                  نسيت كلمة المرور؟
+                </Link>
+              </div>
+
               <div className="form-item pt-1">
                 <button type="submit" disabled={isLoading} className="submit-btn relative w-full py-3.5 bg-gradient-to-l from-brand-purple to-brand-purple-hover hover:from-brand-purple-hover hover:to-brand-purple text-white text-sm font-bold rounded-xl shadow-lg shadow-brand-purple/30 transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed overflow-hidden group">
                   <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
