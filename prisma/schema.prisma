@@ -1,6 +1,6 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:/tmp/vu-courses.db"
 }
 
 generator client {
@@ -18,7 +18,6 @@ model User {
   walletBalance Float          @default(500.0)
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-
   courses       Course[]       @relation("InstructorCourses")
   enrollments   Enrollment[]
   progress      LessonProgress[]
@@ -39,25 +38,24 @@ model Category {
 }
 
 model Course {
-  id           String        @id @default(uuid())
-  title        String
-  description  String
-  thumbnail    String?
-  categoryId   String?
-  category     Category?     @relation(fields: [categoryId], references: [id])
-  instructorId String
-  instructor   User          @relation("InstructorCourses", fields: [instructorId], references: [id])
-  price        Float         @default(0.0)
-  duration     String        @default("10 ساعات")
-  rating       Float         @default(4.9)
-  studentsCount Int          @default(0)
-  published    Boolean       @default(true)
-  createdAt    DateTime      @default(now())
-
-  levels       Level[]
-  enrollments  Enrollment[]
-  certificates Certificate[]
-  favorites    Favorite[]
+  id             String        @id @default(uuid())
+  title          String
+  description    String
+  thumbnail      String?
+  categoryId     String?
+  category       Category?     @relation(fields: [categoryId], references: [id])
+  instructorId   String
+  instructor     User          @relation("InstructorCourses", fields: [instructorId], references: [id])
+  price          Float         @default(0.0)
+  duration       String        @default("10 ساعات")
+  rating         Float         @default(4.9)
+  studentsCount  Int           @default(0)
+  published      Boolean       @default(true)
+  createdAt      DateTime      @default(now())
+  levels         Level[]
+  enrollments    Enrollment[]
+  certificates   Certificate[]
+  favorites      Favorite[]
 }
 
 model Level {
@@ -75,26 +73,25 @@ model Lesson {
   levelId     String
   level       Level          @relation(fields: [levelId], references: [id], onDelete: Cascade)
   title       String
-  type        String         @default("VIDEO") // VIDEO, PDF, TEST, TEXT
+  type        String         @default("VIDEO")
   contentUrl  String?
   pdfUrl      String?
   textContent String?
   duration    String         @default("15 دقيقة")
   order       Int            @default(1)
-  
   quizzes     Quiz[]
   progress    LessonProgress[]
 }
 
 model Quiz {
-  id           String        @id @default(uuid())
-  lessonId     String
-  lesson       Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  title        String
-  passingScore Int           @default(70)
-  timeLimitMinutes Int       @default(15)
-  questions    Question[]
-  attempts     QuizAttempt[]
+  id               String        @id @default(uuid())
+  lessonId         String
+  lesson           Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  title            String
+  passingScore     Int           @default(70)
+  timeLimitMinutes Int           @default(15)
+  questions        Question[]
+  attempts         QuizAttempt[]
 }
 
 model Question {
@@ -102,7 +99,7 @@ model Question {
   quizId        String
   quiz          Quiz         @relation(fields: [quizId], references: [id], onDelete: Cascade)
   questionText  String
-  type          String       @default("MULTIPLE_CHOICE") // MULTIPLE_CHOICE, TRUE_FALSE, MULTIPLE_ANSWER
+  type          String       @default("MULTIPLE_CHOICE")
   optionsJson   String
   correctAnswer String
 }
@@ -137,7 +134,6 @@ model LessonProgress {
   lesson    Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   completed Boolean  @default(false)
   updatedAt DateTime @updatedAt
-
   @@unique([userId, lessonId])
 }
 
@@ -159,7 +155,6 @@ model Favorite {
   courseId  String
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
-
   @@unique([userId, courseId])
 }
 
