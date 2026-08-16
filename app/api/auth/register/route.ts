@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { ensureCleanProductionData, prisma } from '@/lib/prisma'
-import { hashPassword, signToken } from '@/lib/auth'
+import { hashPassword, signRememberedAccountToken, signToken } from '@/lib/auth'
 import { withErrorHandling, withValidation } from '@/lib/api-wrapper'
 import { registerSchema } from '@/lib/validations'
 import { logger } from '@/lib/logger'
@@ -19,6 +19,7 @@ export const POST = withErrorHandling(
     await ensureCleanProductionData()
     const { name, email, password, role } = data
     const normalizedEmail = email.trim().toLowerCase()
+    const passwordHash = hashPassword(password)
 
     const existingUser = await prisma.user.findUnique({ where: { email: normalizedEmail } })
     if (existingUser) {
@@ -29,19 +30,34 @@ export const POST = withErrorHandling(
       data: {
         name: name.trim(),
         email: normalizedEmail,
-        passwordHash: hashPassword(password),
+        passwordHash,
         role: role || 'STUDENT',
         walletBalance: 500.0,
       },
     })
 
     const token = signToken({ userId: user.id, email: user.email, name: user.name, role: user.role })
+    const rememberedAccount = signRememberedAccountToken({
+      userId: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role,
+      passwordHash,
+    })
     const response = NextResponse.json({ success: true, user: sanitizeUser(user), token })
 
     response.cookies.set('vu_auth_token', token, {
       httpOnly: true,
       path: '/',
       maxAge: 60 * 60 * 24 * 7,
+      sameSite: 'lax',
+      secure: process.env.NODE_ENV === 'production',
+    })
+
+    response.cookies.set('vu_account_record', rememberedAccount, {
+      httpOnly: true,
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
     })
