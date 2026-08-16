@@ -1,42 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { ensureCleanProductionData, prisma } from '@/lib/prisma'
 import { getAuthUser } from '@/lib/auth'
 
 export async function GET(req: NextRequest) {
   try {
+    await ensureCleanProductionData()
     const { searchParams } = new URL(req.url)
     const query = searchParams.get('q') || ''
     const category = searchParams.get('category') || ''
-    const level = searchParams.get('level') || ''
 
     const whereClause: any = {}
-    if (query) {
-      whereClause.OR = [
-        { title: { contains: query } },
-        { description: { contains: query } },
-      ]
-    }
-    if (category) {
-      whereClause.categoryId = category
-    }
+    if (query) whereClause.OR = [{ title: { contains: query } }, { description: { contains: query } }]
+    if (category) whereClause.categoryId = category
 
     const courses = await prisma.course.findMany({
       where: whereClause,
       include: {
-        instructor: {
-          select: { id: true, name: true, avatar: true },
-        },
+        instructor: { select: { id: true, name: true, avatar: true } },
         category: true,
         levels: {
           orderBy: { levelNumber: 'asc' },
           include: {
             lessons: {
               orderBy: { order: 'asc' },
-              include: {
-                quizzes: {
-                  include: { questions: true },
-                },
-              },
+              include: { quizzes: { include: { questions: true } } },
             },
           },
         },
@@ -53,6 +40,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    await ensureCleanProductionData()
     const auth = getAuthUser(req)
     if (!auth || (auth.role !== 'INSTRUCTOR' && auth.role !== 'ADMIN')) {
       return NextResponse.json({ error: 'غير مصرح لك بإضافة دورة تعليمية' }, { status: 403 })
@@ -60,33 +48,24 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json()
     const { title, description, categoryId, price, duration, thumbnail } = body
-
     if (!title || !description) {
       return NextResponse.json({ error: 'يرجى إدخال عنوان الدورة والوصف' }, { status: 400 })
     }
 
     const course = await prisma.course.create({
       data: {
-        title,
-        description,
+        title: title.trim(),
+        description: description.trim(),
         categoryId: categoryId || null,
         instructorId: auth.userId,
         price: parseFloat(price) || 0,
         duration: duration || '10 ساعات',
         thumbnail: thumbnail || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&auto=format&fit=crop&q=80',
         levels: {
-          create: [
-            {
-              levelNumber: 1,
-              title: 'Level 1: المقدمة والأساسيات',
-              description: 'مستوى التأسيس والوسائط المبدئية',
-            },
-          ],
+          create: [{ levelNumber: 1, title: 'Level 1: المقدمة والأساسيات', description: 'مستوى التأسيس والوسائط المبدئية' }],
         },
       },
-      include: {
-        levels: true,
-      },
+      include: { levels: true },
     })
 
     return NextResponse.json({ success: true, course })
