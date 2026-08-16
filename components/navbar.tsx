@@ -111,18 +111,13 @@ export function Navbar({ currentUser }: { currentUser?: User | null }) {
   return (
     <header className="sticky top-0 z-40 w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur border-b border-slate-200 dark:border-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        
-        {/* Logo & Brand */}
         <div className="flex items-center gap-4">
           <Link href="/courses" className="flex items-center gap-2 hover:opacity-90 transition">
             <Logo size="md" />
           </Link>
         </div>
 
-        {/* Right side controls */}
         <div className="flex items-center gap-2">
-          
-          {/* User Balance Badge */}
           {currentUser && (
             <div className="hidden sm:flex items-center gap-2 bg-purple-50 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-purple-200 dark:border-slate-700">
               <Wallet className="w-4 h-4 text-brand-orange" />
@@ -132,7 +127,6 @@ export function Navbar({ currentUser }: { currentUser?: User | null }) {
             </div>
           )}
 
-          {/* Language Switcher */}
           <div className="relative">
             <button
               onClick={() => setShowLangMenu(!showLangMenu)}
@@ -166,7 +160,6 @@ export function Navbar({ currentUser }: { currentUser?: User | null }) {
             )}
           </div>
 
-          {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
             className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition"
@@ -175,17 +168,17 @@ export function Navbar({ currentUser }: { currentUser?: User | null }) {
             {theme === 'dark' ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-slate-700" />}
           </button>
 
-          {/* Login Button */}
-          <Link
-            href="/login"
-            className="flex items-center gap-1.5 px-3 py-2 bg-brand-purple hover:bg-brand-purple-hover text-white text-xs font-bold rounded-lg shadow transition btn-hover whitespace-nowrap"
-            title="تسجيل الدخول"
-          >
-            <LogIn className="w-4 h-4" />
-            <span className="hidden sm:inline">تسجيل الدخول</span>
-          </Link>
+          {!currentUser && (
+            <Link
+              href="/login"
+              className="flex items-center gap-1.5 px-3 py-2 bg-brand-purple hover:bg-brand-purple-hover text-white text-xs font-bold rounded-lg shadow transition btn-hover whitespace-nowrap"
+              title="تسجيل الدخول"
+            >
+              <LogIn className="w-4 h-4" />
+              <span className="hidden sm:inline">تسجيل الدخول</span>
+            </Link>
+          )}
 
-          {/* Notifications Bell */}
           {currentUser && (
             <div className="relative">
               <button
@@ -243,7 +236,6 @@ export function Navbar({ currentUser }: { currentUser?: User | null }) {
             </div>
           )}
 
-          {/* Profile Dropdown */}
           {currentUser ? (
             <div className="relative">
               <button
@@ -270,37 +262,19 @@ export function Navbar({ currentUser }: { currentUser?: User | null }) {
                     <p className="text-[11px] text-slate-500 dark:text-slate-400">{currentUser.email}</p>
                   </div>
 
-                  <Link
-                    href={getDashboardLink()}
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-slate-800 rounded-lg transition"
-                    onClick={() => setShowProfileMenu(false)}
-                  >
+                  <Link href={getDashboardLink()} className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-slate-800 rounded-lg transition" onClick={() => setShowProfileMenu(false)}>
                     <LayoutDashboard className="w-4 h-4 text-brand-purple" />
                     {t('dashboard')}
                   </Link>
-
-                  <Link
-                    href={getProfileLink()}
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-slate-800 rounded-lg transition"
-                    onClick={() => setShowProfileMenu(false)}
-                  >
+                  <Link href={getProfileLink()} className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-slate-800 rounded-lg transition" onClick={() => setShowProfileMenu(false)}>
                     <UserIcon className="w-4 h-4 text-brand-purple" />
                     {t('profile')}
                   </Link>
-
-                  <Link
-                    href="/courses"
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-slate-800 rounded-lg transition"
-                    onClick={() => setShowProfileMenu(false)}
-                  >
+                  <Link href="/courses" className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-slate-800 rounded-lg transition" onClick={() => setShowProfileMenu(false)}>
                     <BookOpen className="w-4 h-4 text-brand-purple" />
                     {t('courses')}
                   </Link>
-
-                  <button
-                    onClick={handleLogout}
-                    className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition mt-1"
-                  >
+                  <button onClick={handleLogout} className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-lg transition mt-1">
                     <LogOut className="w-4 h-4" />
                     {t('logout')}
                   </button>
