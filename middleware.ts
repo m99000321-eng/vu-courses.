@@ -7,21 +7,16 @@ export const config = {
 }
 
 export function middleware(request: NextRequest) {
-  if (
-    request.nextUrl.pathname === '/courses' &&
-    request.cookies.get('vu_post_login_redirect')?.value === 'dashboard'
-  ) {
-    const redirectUrl = request.nextUrl.clone()
-    redirectUrl.pathname = '/student/dashboard'
-    const redirectResponse = NextResponse.redirect(redirectUrl)
-    redirectResponse.cookies.delete('vu_post_login_redirect')
-    return redirectResponse
-  }
-
   const response = NextResponse.next()
 
+  if (request.nextUrl.pathname === '/courses' && request.cookies.get('vu_auth_token')?.value) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/student/dashboard'
+    return NextResponse.redirect(url)
+  }
+
   const limiter = rateLimit(100, 15 * 60 * 1000)
-  if (!limiter(request)) {
+  if (request.nextUrl.pathname.startsWith('/api/') && !limiter(request)) {
     logger.warn('Rate limit exceeded', { ip: request.ip })
     return NextResponse.json(
       { error: 'تم تجاوز الحد المسموح من الطلبات' },
