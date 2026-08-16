@@ -30,45 +30,45 @@ if (!globalForPrisma.prismaDbReady) {
   globalForPrisma.prismaDbReady = prepareRuntimeDatabase()
 }
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: ['error', 'warn'],
-  })
+export const prisma = globalForPrisma.prisma ?? new PrismaClient({ log: ['error', 'warn'] })
 
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma
-}
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
 
 export async function ensureCleanProductionData() {
   if (process.env.NODE_ENV !== 'production') return
   if (!globalForPrisma.demoDataSanitized) {
     globalForPrisma.demoDataSanitized = (async () => {
-      const demoEmails = [
-        'student1@vucourses.com',
-        'student2@vucourses.com',
-        'student3@vucourses.com',
-      ]
+      try {
+        const demoUsers = await prisma.user.findMany({
+          where: { email: { in: ['student1@vucourses.com', 'student2@vucourses.com', 'student3@vucourses.com'] } },
+          select: { id: true },
+        })
+        const demoIds = demoUsers.map((u) => u.id)
 
-      await prisma.user.deleteMany({ where: { email: { in: demoEmails } } })
+        if (demoIds.length) {
+          await prisma.message.deleteMany({ where: { OR: [{ senderId: { in: demoIds } }, { receiverId: { in: demoIds } }] } })
+          await prisma.lessonProgress.deleteMany({ where: { userId: { in: demoIds } } })
+          await prisma.quizAttempt.deleteMany({ where: { userId: { in: demoIds } } })
+          await prisma.enrollment.deleteMany({ where: { userId: { in: demoIds } } })
+          await prisma.certificate.deleteMany({ where: { userId: { in: demoIds } } })
+          await prisma.favorite.deleteMany({ where: { userId: { in: demoIds } } })
+          await prisma.notification.deleteMany({ where: { userId: { in: demoIds } } })
+          await prisma.payment.deleteMany({ where: { userId: { in: demoIds } } })
+          await prisma.user.deleteMany({ where: { id: { in: demoIds } } })
+        }
 
-      await prisma.user.updateMany({
-        where: { email: 'instructor@vucourses.com' },
-        data: {
-          name: 'فريق VU. COURSES',
-          avatar: null,
-          bio: 'فريق منصة VU. COURSES التعليمية',
-        },
-      })
+        await prisma.user.updateMany({
+          where: { email: 'instructor@vucourses.com' },
+          data: { name: 'فريق VU. COURSES', avatar: null, bio: 'فريق منصة VU. COURSES التعليمية' },
+        })
 
-      await prisma.user.updateMany({
-        where: { email: 'admin@vucourses.com' },
-        data: {
-          name: 'إدارة VU. COURSES',
-          avatar: null,
-          bio: 'الحساب الإداري الخاص بالمنصة',
-        },
-      })
+        await prisma.user.updateMany({
+          where: { email: 'admin@vucourses.com' },
+          data: { name: 'إدارة VU. COURSES', avatar: null, bio: 'الحساب الإداري الخاص بالمنصة' },
+        })
+      } catch (error) {
+        console.error('Production data cleanup failed:', error)
+      }
     })()
   }
 
