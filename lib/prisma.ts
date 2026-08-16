@@ -26,9 +26,7 @@ function prepareRuntimeDatabase() {
   }
 }
 
-if (!globalForPrisma.prismaDbReady) {
-  globalForPrisma.prismaDbReady = prepareRuntimeDatabase()
-}
+if (!globalForPrisma.prismaDbReady) globalForPrisma.prismaDbReady = prepareRuntimeDatabase()
 
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({ log: ['error', 'warn'] })
 
@@ -57,10 +55,30 @@ export async function ensureCleanProductionData() {
           await prisma.user.deleteMany({ where: { id: { in: demoIds } } })
         }
 
-        await prisma.user.updateMany({
-          where: { email: 'instructor@vucourses.com' },
-          data: { name: 'فريق VU. COURSES', avatar: null, bio: 'فريق منصة VU. COURSES التعليمية' },
-        })
+        // Production is intentionally instructor-free until a real instructor is added later.
+        const instructors = await prisma.user.findMany({ where: { role: 'INSTRUCTOR' }, select: { id: true } })
+        const instructorIds = instructors.map((u) => u.id)
+        if (instructorIds.length) {
+          const instructorCourses = await prisma.course.findMany({ where: { instructorId: { in: instructorIds } }, select: { id: true } })
+          const courseIds = instructorCourses.map((c) => c.id)
+
+          if (courseIds.length) {
+            await prisma.enrollment.deleteMany({ where: { courseId: { in: courseIds } } })
+            await prisma.certificate.deleteMany({ where: { courseId: { in: courseIds } } })
+            await prisma.favorite.deleteMany({ where: { courseId: { in: courseIds } } })
+            await prisma.course.deleteMany({ where: { id: { in: courseIds } } })
+          }
+
+          await prisma.message.deleteMany({ where: { OR: [{ senderId: { in: instructorIds } }, { receiverId: { in: instructorIds } }] } })
+          await prisma.lessonProgress.deleteMany({ where: { userId: { in: instructorIds } } })
+          await prisma.quizAttempt.deleteMany({ where: { userId: { in: instructorIds } } })
+          await prisma.enrollment.deleteMany({ where: { userId: { in: instructorIds } } })
+          await prisma.certificate.deleteMany({ where: { userId: { in: instructorIds } } })
+          await prisma.favorite.deleteMany({ where: { userId: { in: instructorIds } } })
+          await prisma.notification.deleteMany({ where: { userId: { in: instructorIds } } })
+          await prisma.payment.deleteMany({ where: { userId: { in: instructorIds } } })
+          await prisma.user.deleteMany({ where: { id: { in: instructorIds } } })
+        }
 
         await prisma.user.updateMany({
           where: { email: 'admin@vucourses.com' },
