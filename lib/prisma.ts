@@ -4,26 +4,37 @@ import path from 'path'
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
+  prismaDbReady: boolean | undefined
 }
 
-const sourceDb = path.join(process.cwd(), 'prisma', 'dev.db')
 const runtimeDb = '/tmp/vu-courses.db'
+const bundledDb = path.join(process.cwd(), 'prisma', 'dev.db')
 
-try {
-  if (fs.existsSync(sourceDb) && !fs.existsSync(runtimeDb)) {
-    fs.copyFileSync(sourceDb, runtimeDb)
+function prepareRuntimeDatabase() {
+  try {
+    if (fs.existsSync(runtimeDb)) return true
+    if (!fs.existsSync(bundledDb)) {
+      console.error('Bundled SQLite database is missing:', bundledDb)
+      return false
+    }
+    fs.copyFileSync(bundledDb, runtimeDb)
+    return fs.existsSync(runtimeDb)
+  } catch (error) {
+    console.error('Unable to prepare runtime SQLite database:', error)
+    return false
   }
-} catch (error) {
-  console.error('Database initialization failed:', error)
+}
+
+if (!globalForPrisma.prismaDbReady) {
+  globalForPrisma.prismaDbReady = prepareRuntimeDatabase()
 }
 
 export const prisma =
   globalForPrisma.prisma ??
   new PrismaClient({
     log: ['error', 'warn'],
-    datasources: {
-      db: { url: 'file:/tmp/vu-courses.db' },
-    },
   })
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+if (process.env.NODE_ENV !== 'production') {
+  globalForPrisma.prisma = prisma
+}
