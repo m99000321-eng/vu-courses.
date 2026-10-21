@@ -10,7 +10,7 @@ export default function SupportPage() {
   const { t } = useLanguage()
   const supportItems = [
     { icon: MessageCircle, title: t('quickHelp'), description: t('chatSupportDescription'), href: '/chat', action: t('openChats') },
-    { icon: Mail, title: t('emailSupport'), description: t('emailSupportDescription'), href: 'mailto:support@vucourses.com', action: 'support@vucourses.com' },
+    { icon: Mail, title: t('emailSupport'), description: t('emailSupportDescription'), href: 'mailto:support@codestory.com', action: 'support@codestory.com' },
     { icon: Clock3, title: t('supportHours'), description: t('supportHoursDescription'), href: '#hours', action: t('dailySupportHours') },
   ]
   return (
