@@ -813,7 +813,7 @@ Get platform settings (admin only).
   "settings": {
     "siteName": "Code Story",
     "siteDescription": "Platform description",
-    "contactEmail": "support@vucourses.com",
+    "contactEmail": "support@codestory.com",
     "supportPhone": "+20 123 456 7890",
     "maintenanceMode": false
   }
