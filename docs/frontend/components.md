@@ -33,7 +33,7 @@
 ### Logo (`components/logo.tsx`)
 - **Type:** Client Component
 - **Features:**
-  - VU. COURSES brand logo
+  - Code Story brand logo
   - Purple gradient with icon
   - Responsive sizing
 - **Usage:** Used in Navbar and Auth pages
@@ -88,7 +88,7 @@
 - **Type:** Client Component
 - **Props:** `isOpen: boolean`, `onClose: () => void`, `certificate: Certificate`
 - **Features:**
-  - Official certificate design with VU. COURSES branding
+  - Official certificate design with Code Story branding
   - QR code for verification
   - Student name, course name, instructor signatures
   - Issue date and certificate code
