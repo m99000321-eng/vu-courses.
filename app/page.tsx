@@ -155,7 +155,7 @@ export default function RootPage() {
           <h1 className="hero-title mt-8 text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-slate-950">
             أهلاً بك في
             <span className="block mt-2 bg-gradient-to-r from-brand-orange via-rose-500 to-brand-purple bg-clip-text text-transparent">
-              VU. COURSES
+              Code Story
             </span>
           </h1>
 
