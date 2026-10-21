@@ -49,8 +49,8 @@
 
 ```bash
 # 1. استنساخ المشروع
-git clone <repository-url>
-cd vu-courses
+git clone <repository-url> code-story
+cd code-story
 
 # 2. تثبيت التبعيات
 npm install
@@ -178,4 +178,4 @@ MIT
 
 ## الدعم
 
-للدعم والاستفسارات: support@vucourses.com
+للدعم والاستفسارات: support@codestory.com
