@@ -4,7 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { LanguageProvider } from '@/components/language-provider'
 
 export const metadata: Metadata = {
-  title: 'VU. COURSES - المنصة التعليمية الشاملة لتطوير البرمجيات',
+  title: 'Code Story - المنصة التعليمية الشاملة لتطوير البرمجيات',
   description: 'منصة برمجية متكاملة لتعليم تطوير الويب والتقنيات البرمجية الحديثة مع نظام الشهادات التفاعلية والدروس المباشرة.',
 }
 
