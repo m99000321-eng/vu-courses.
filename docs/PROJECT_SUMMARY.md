@@ -1,4 +1,4 @@
-# VU. COURSES - Professional Project Summary
+# Code Story - Professional Project Summary
 
 ## ✅ Project Status: FULLY OPERATIONAL
 
