@@ -39,7 +39,7 @@ export async function ensureCleanProductionData() {
   try {
     await prisma.user.updateMany({
       where: { email: 'admin@vucourses.com' },
-      data: { name: 'إدارة VU. COURSES', avatar: null, bio: 'الحساب الإداري الخاص بالمنصة' },
+      data: { name: 'إدارة Code Story', avatar: null, bio: 'الحساب الإداري الخاص بالمنصة' },
     })
   } catch (error) {
     console.error('Production admin normalization failed:', error)
