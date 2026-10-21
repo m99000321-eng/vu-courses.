@@ -811,7 +811,7 @@ Get platform settings (admin only).
 ```json
 {
   "settings": {
-    "siteName": "VU. COURSES",
+    "siteName": "Code Story",
     "siteDescription": "Platform description",
     "contactEmail": "support@vucourses.com",
     "supportPhone": "+20 123 456 7890",
