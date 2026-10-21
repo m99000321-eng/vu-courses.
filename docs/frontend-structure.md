@@ -1,7 +1,7 @@
-# Frontend Structure - VU. COURSES
+# Frontend Structure - Code Story
 
 ## Overview
-This document provides a complete map of the frontend structure for the VU. COURSES platform. All frontend files are located in the `app/` and `components/` directories.
+This document provides a complete map of the frontend structure for the Code Story platform. All frontend files are located in the `app/` and `components/` directories.
 
 ## Directory Tree
 
@@ -90,7 +90,7 @@ frontend/
 ├── components/                  # Reusable React Components
 │   ├── navbar.tsx               # Top navigation bar
 │   ├── sidebar.tsx              # Side navigation menu
-│   ├── logo.tsx                 # VU. COURSES logo
+│   ├── logo.tsx                 # Code Story logo
 │   ├── theme-provider.tsx       # Dark/Light mode provider
 │   ├── video-player-modal.tsx   # Video lesson player
 │   ├── pdf-viewer-modal.tsx     # PDF document viewer
@@ -254,7 +254,7 @@ frontend/
 |-----------|-------------|
 | `Navbar` | Top navigation with logo, notifications, profile menu |
 | `Sidebar` | Side navigation with role-based menu items |
-| `Logo` | VU. COURSES brand logo |
+| `Logo` | Code Story brand logo |
 | `ThemeProvider` | Dark/Light mode context |
 | `VideoPlayerModal` | Video lesson player with progress tracking |
 | `PdfViewerModal` | PDF document viewer |
