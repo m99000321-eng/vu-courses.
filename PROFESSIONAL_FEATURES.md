@@ -1,4 +1,4 @@
-# VU. COURSES - Professional Features Added
+# Code Story - Professional Features Added
 
 ## Security Improvements
 - ✅ JWT Authentication with httpOnly cookies
