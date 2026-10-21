@@ -97,7 +97,7 @@ export default function RegisterPage() {
             <div className="text-center"><p className="text-xs text-slate-500">لديك حساب بالفعل؟ <Link href="/login" className="text-brand-purple font-bold hover:text-brand-purple-hover">تسجيل الدخول</Link></p></div>
           </div>
         </div>
-        <p className="text-center text-slate-600 text-xs mt-5 font-medium">© 2026 جميع الحقوق محفوظة - VU. COURSES</p>
+        <p className="text-center text-slate-600 text-xs mt-5 font-medium">© 2026 جميع الحقوق محفوظة - Code Story</p>
       </div>
     </div>
   )
