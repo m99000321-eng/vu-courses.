@@ -1,4 +1,4 @@
-# Frontend - VU. COURSES
+# Frontend - Code Story
 
 ## 📁 هيكل المشروع
 
@@ -95,7 +95,7 @@ frontend/
 
 1. **Navbar** - شريط التنقل العلوي
 2. **Sidebar** - القائمة الجانبية
-3. **Logo** - شعار VU. COURSES
+3. **Logo** - شعار Code Story
 4. **ThemeProvider** - إدارة الوضع الليلي
 5. **VideoPlayerModal** - مشغل الفيديو
 6. **PdfViewerModal** - عارض PDF
