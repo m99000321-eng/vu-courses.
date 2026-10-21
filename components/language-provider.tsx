@@ -90,7 +90,7 @@ const translations: Translations = {
   adminLogin: { ar: 'دخول أدمن', en: 'Admin Login', fr: 'Connexion admin', de: 'Admin-Anmeldung', es: 'Inicio de admin' },
 
   createAccountTitle: { ar: 'إنشاء حساب جديد', en: 'Create New Account', fr: 'Créer un nouveau compte', de: 'Neues Konto erstellen', es: 'Crear nueva cuenta' },
-  joinVUCourses: { ar: 'انضم إلى مجتمع Code Story التعليمي', en: 'Join the Code Story Educational Community', fr: 'Rejoignez la communauté éducative Code Story', de: 'Treten Sie der Code Story-Bildungsgemeinschaft bei', es: 'Únete a la comunidad educativa Code Story' },
+  joinCodeStory: { ar: 'انضم إلى مجتمع Code Story التعليمي', en: 'Join the Code Story Educational Community', fr: 'Rejoignez la communauté éducative Code Story', de: 'Treten Sie der Code Story-Bildungsgemeinschaft bei', es: 'Únete a la comunidad educativa Code Story' },
   startLearningJourney: { ar: 'ابدأ رحلتك نحو الاحتراف الآن', en: 'Start Your Journey to Professionalism Now', fr: 'Commencez votre voyage vers le professionnalisme maintenant', de: 'Starten Sie jetzt Ihre Reise zum Professionalismus', es: 'Comienza tu viaje hacia el profesionalismo ahora' },
   fullNameLabel: { ar: 'الاسم الكامل', en: 'Full Name', fr: 'Nom complet', de: 'Vollständiger Name', es: 'Nombre completo' },
   fullNamePlaceholder: { ar: 'أدخل اسمك الكريم', en: 'Enter your full name', fr: 'Entrez votre nom complet', de: 'Geben Sie Ihren vollständigen Namen ein', es: 'Ingresa tu nombre completo' },
