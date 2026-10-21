@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getAuthUser } from '@/lib/auth'
 
 const defaultSettings = {
-  siteName: 'VU Courses',
+  siteName: 'Code Story',
   siteDescription: 'منصة التعليم الإلكتروني الرائدة',
   contactEmail: 'support@vucourses.com',
   supportPhone: '+20 123 456 7890',
@@ -12,9 +12,9 @@ const defaultSettings = {
   smtpPass: '',
   maintenanceMode: false,
   logoUrl: '',
-  facebookUrl: 'https://facebook.com/vucourses',
-  twitterUrl: 'https://twitter.com/vucourses',
-  instagramUrl: 'https://instagram.com/vucourses',
+  facebookUrl: '',
+  twitterUrl: '',
+  instagramUrl: '',
 }
 
 let settingsCache = { ...defaultSettings }
