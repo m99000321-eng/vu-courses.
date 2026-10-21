@@ -15,11 +15,11 @@ export function Logo({ className = '', size = 'md' }: LogoProps) {
   return (
     <div className={`inline-flex flex-col items-start font-sans select-none ${className}`}>
       <div className={`font-black leading-none ${sizeClasses.title} flex items-baseline`}>
-        <span className="text-brand-purple tracking-tight">VU</span>
-        <span className="text-brand-orange ml-0.5 font-bold">.</span>
+        <span className="text-brand-purple tracking-tight">Code</span>
+        
       </div>
-      <div className={`font-extrabold text-brand-orange leading-none mt-1 uppercase ${sizeClasses.sub}`}>
-        COURSES
+      <div className={`font-extrabold text-brand-orange leading-none mt-1 ${sizeClasses.sub}`}>
+        Story
       </div>
     </div>
   )
