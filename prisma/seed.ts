@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Starting VU. COURSES database seeding...')
+  console.log('🌱 Starting Code Story database seeding...')
 
   // Clear existing data
   await prisma.payment.deleteMany()
@@ -36,7 +36,7 @@ async function main() {
       role: 'ADMIN',
       walletBalance: 2500.0,
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-      bio: 'مدير عام منصة VU. COURSES التعليمية',
+      bio: 'مدير عام منصة Code Story التعليمية',
     },
   })
 
