@@ -180,7 +180,7 @@ export default function CoursesPage() {
             <div className="relative z-10 space-y-2 max-w-2xl">
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1 bg-brand-orange text-white text-[11px] font-extrabold rounded-full uppercase tracking-wider">
-                  VU. COURSES PLATFORM
+                  CODE STORY PLATFORM
                 </span>
                 <span className="text-xs text-purple-200 font-semibold">{t('webDevelopment')}</span>
               </div>
